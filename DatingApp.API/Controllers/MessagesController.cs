@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DatingApp.API.Controllers
 {
     [ServiceFilter(typeof(LogUserActivity))]
-    [Authorize]
+    
     [Route("api/users/{userId}/[controller]")]
     [ApiController]
     public class MessagesController : ControllerBase
@@ -70,6 +70,11 @@ namespace DatingApp.API.Controllers
             var messageThread = _mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
 
             return Ok(messageThread);
+        }
+
+        public async void Teste(int userId, int recipientId)
+        {
+            var abc = await _repo.GetMessageThread(userId, recipientId);
         }
 
         [HttpPost]
