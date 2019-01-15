@@ -9,6 +9,7 @@ using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace DatingApp.API.Controllers
     [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
 
         private readonly UserManager<User> _userManager;
@@ -55,6 +56,7 @@ namespace DatingApp.API.Controllers
             return BadRequest(result.Errors);
         }
 
+        [DisableCors]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
@@ -69,10 +71,12 @@ namespace DatingApp.API.Controllers
 
                 var userToReturn = _mapper.Map<UserForListDto>(appUser);
 
+                Request.Headers.Add("abc", "hehe");
+
                 return Ok(new
                 {
-                    token = GenerateJwtToken(appUser),
-                    user = userToReturn
+                    token = await GenerateJwtToken(appUser),
+                    user = userToReturn,
                 });
             }
             return Unauthorized();
@@ -90,7 +94,7 @@ namespace DatingApp.API.Controllers
 
             foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role)); 
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8
