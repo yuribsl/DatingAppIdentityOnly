@@ -56,7 +56,7 @@ namespace DatingApp.API.Controllers
             return BadRequest(result.Errors);
         }
 
-        [DisableCors]
+        
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
@@ -69,11 +69,9 @@ namespace DatingApp.API.Controllers
             {
                 var appUser = await _userManager.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.NormalizedUserName == userForLoginDto.Username.ToUpper());
 
-                var userToReturn = _mapper.Map<UserForListDto>(appUser);
+                var userToReturn = _mapper.Map<UserForListDto>(appUser);                
 
-                Request.Headers.Add("abc", "hehe");
-
-                return Ok(new
+                 return Ok(new
                 {
                     token = await GenerateJwtToken(appUser),
                     user = userToReturn,
@@ -81,6 +79,16 @@ namespace DatingApp.API.Controllers
             }
             return Unauthorized();
         }
+
+        [HttpPost("teste")]
+        public async Task<IActionResult> Teste(UserForLoginDto userForLoginDto)
+        {
+            var user = await _userManager.FindByNameAsync("Lola") ;
+
+            return Ok(user);
+
+        }
+
 
         private async Task<string> GenerateJwtToken(User user)
         {

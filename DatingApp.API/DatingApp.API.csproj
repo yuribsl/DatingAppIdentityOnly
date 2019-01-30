@@ -5,6 +5,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190114125549_SqlServerInitial.cs" />
     <Compile Remove="Migrations\20190114125549_SqlServerInitial.Designer.cs" />
+    <Compile Remove="Migrations\20190124012743_full-migration.cs" />
+    <Compile Remove="Migrations\20190124012743_full-migration.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />

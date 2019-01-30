@@ -50,6 +50,7 @@ namespace DatingApp.API
                 opt.Password.RequiredLength = 4;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
+                
             });
 
             builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
